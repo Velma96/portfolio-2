@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,87 +7,104 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-gray-100 font-sans">
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans">
+
+    <!-- Dark Mode Toggle -->
+    <div class="fixed top-4 right-4 z-50">
+        <button id="darkModeToggle" class="bg-teal-500 text-white px-4 py-2 rounded shadow hover:bg-teal-600 transition">
+            Toggle Dark Mode
+        </button>
+    </div>
+
     <!-- Navigation -->
-    <nav class="bg-blue-600 text-white p-4 sticky top-0 shadow-md">
+    <nav class="bg-teal-500 dark:bg-teal-700 text-white p-4 sticky top-0 shadow-md z-40">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-2xl font-bold">Phoebe Velma</h1>
             <ul class="flex space-x-6">
-                <li><a href="#about" class="hover:underline">About</a></li>
-                <li><a href="#projects" class="hover:underline">Projects</a></li>
-                <li><a href="#skills" class="hover:underline">Skills</a></li>
-                <li><a href="#contact" class="hover:underline">Contact</a></li>
+                <li><a href="#about" class="hover:text-teal-100 transition">About</a></li>
+                <li><a href="#projects" class="hover:text-teal-100 transition">Projects</a></li>
+                <li><a href="#skills" class="hover:text-teal-100 transition">Skills</a></li>
+                <li><a href="#contact" class="hover:text-teal-100 transition">Contact</a></li>
             </ul>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section id="about" class="py-20 bg-white">
-        <div class="container mx-auto text-center">
-            <h2 class="text-4xl font-bold mb-4">Software Engineer</h2>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-                Hi, I'm Phoebe Velma, a passionate software engineer with experience in building web applications, specializing in full-stack development.
-            </p>
-        </div>
+    <section id="about" class="py-20 text-center fade-in">
+        <h2 class="text-4xl font-extrabold mb-4"><span id="typewriter"></span></h2>
+        <p class="text-lg max-w-2xl mx-auto">
+            Hi, I'm Phoebe Velma, a passionate Full-Stack Software Engineer focused on solving real-world problems through code.
+        </p>
+        <a href="resume.pdf" download class="mt-6 inline-block bg-teal-500 text-white px-6 py-2 rounded hover:bg-teal-600 transition">Download Resume</a>
     </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="py-20 bg-gray-100">
+    <!-- Projects Section with Live Previews -->
+    <section id="projects" class="py-20 fade-in">
         <div class="container mx-auto">
             <h2 class="text-3xl font-bold text-center mb-12">Projects</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h3 class="text-xl font-semibold mb-2">Task Manager App</h3>
-                    <p class="text-gray-600 mb-4">A web-based task management tool built with React and Node.js, featuring user authentication and real-time updates.</p>
-                    <a href="#" class="text-blue-600 hover:underline">View Project</a>
+
+                <div class="project-card bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:scale-105 transition-transform cursor-pointer" onclick="openModal('ajali')">
+                    <h3 class="text-xl font-semibold mb-2">Ajali! App</h3>
+                    <img src="Ajali.png" alt="Ajali Screenshot" class="rounded mb-4">
+                    <p class="text-gray-600 dark:text-gray-300">React + Node.js | Real-time Incident Reporting App.</p>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h3 class="text-xl font-semibold mb-2">E-Commerce Platform</h3>
-                    <p class="text-gray-600 mb-4">A full-stack e-commerce site with payment integration, built using Django and PostgreSQL.</p>
-                    <a href="#" class="text-blue-600 hover:underline">View Project</a>
+
+                <div class="project-card bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:scale-105 transition-transform cursor-pointer" onclick="openModal('car-rental')">
+                    <h3 class="text-xl font-semibold mb-2">Car Rental App</h3>
+                    <img src="car-rental.png" alt="Car Rental Screenshot" class="rounded mb-4">
+                    <p class="text-gray-600 dark:text-gray-300">Django + PostgreSQL | Full-stack eCommerce with payments.</p>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h3 class="text-xl font-semibold mb-2">Portfolio Website</h3>
-                    <p class="text-gray-600 mb-4">This very portfolio, built with HTML, Tailwind CSS, and JavaScript, showcasing responsive design.</p>
-                    <a href="#" class="text-blue-600 hover:underline">View Project</a>
+
+                <div class="project-card bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:scale-105 transition-transform cursor-pointer" onclick="openModal('weather')">
+                    <h3 class="text-xl font-semibold mb-2">Weather Watchlite</h3>
+                    <img src="weather.png" alt="Weather App Screenshot" class="rounded mb-4">
+                    <p class="text-gray-600 dark:text-gray-300">HTML + Tailwind + JS | Real-time Weather Dashboard.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="py-20 bg-white">
-        <div class="container mx-auto">
-            <h2 class="text-3xl font-bold text-center mb-12">Skills</h2>
-            <div class="flex flex-wrap justify-center gap-4">
-                <span class="bg-blue-600 text-white px-4 py-2 rounded-full">JavaScript</span>
-                <span class="bg-blue-600 text-white px-4 py-2 rounded-full">React</span>
-                <span class="bg-blue-600 text-white px-4 py-2 rounded-full">Node.js</span>
-                <span class="bg-blue-600 text-white px-4 py-2 rounded-full">Python</span>
-                <span class="bg-blue-600 text-white px-4 py-2 rounded-full">Django</span>
-                <span class="bg-blue-600 text-white px-4 py-2 rounded-full">SQL</span>
-            </div>
+    <!-- Project Modals -->
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-70 hidden justify-center items-center z-50">
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg max-w-3xl relative">
+            <button onclick="closeModal()" class="absolute top-2 right-2 text-red-500 text-xl">✖</button>
+            <iframe id="modalContent" src="" frameborder="0" class="w-full h-96 rounded"></iframe>
+        </div>
+    </div>
+
+    <!-- Skills -->
+    <section id="skills" class="py-20 fade-in text-center">
+        <h2 class="text-3xl font-bold mb-12">Skills</h2>
+        <div class="flex flex-wrap justify-center gap-4">
+            <span class="skill-badge">JavaScript</span>
+            <span class="skill-badge">React</span>
+            <span class="skill-badge">Node.js</span>
+            <span class="skill-badge">Python</span>
+            <span class="skill-badge">Django</span>
+            <span class="skill-badge">SQL</span>
+            <span class="skill-badge">Tailwind CSS</span>
+            <span class="skill-badge">PostgreSQL</span>
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="py-20 bg-gray-100">
-        <div class="container mx-auto text-center">
-            <h2 class="text-3xl font-bold mb-12">Contact Me</h2>
-            <p class="text-lg text-gray-600 mb-6">Feel free to reach out for collaborations or opportunities!</p>
-            <div class="space-y-4">
-                <p>Email: <a href="mailto:john.doe@example.com" class="text-blue-600 hover:underline">john.doe@example.com</a></p>
-                <p>GitHub: <a href="#" class="text-blue-600 hover:underline">github.com/johndoe</a></p>
-                <p>LinkedIn: <a href="#" class="text-blue-600 hover:underline">linkedin.com/in/johndoe</a></p>
-            </div>
-        </div>
+    <!-- Contact Form (Formspree) -->
+    <section id="contact" class="py-20 fade-in text-center">
+        <h2 class="text-3xl font-bold mb-8">Contact Me</h2>
+        <form action="https://formspree.io/f/mrbkjqeo" method="POST" class="max-w-xl mx-auto space-y-4">
+            <input type="text" name="name" placeholder="Your Name" required class="w-full px-4 py-2 rounded border border-gray-300">
+            <input type="email" name="_replyto" placeholder="Your Email" required class="w-full px-4 py-2 rounded border border-gray-300">
+            <textarea name="message" placeholder="Your Message" required class="w-full px-4 py-2 rounded border border-gray-300"></textarea>
+            <button type="submit" class="bg-teal-500 text-white px-6 py-2 rounded hover:bg-teal-600 transition">Send Message</button>
+        </form>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-blue-600 text-white p-4 text-center">
-        <p>&copy; 2025 Phoebe Velma. All rights reserved.</p>
+    <footer class="bg-teal-500 dark:bg-teal-700 text-white p-4 text-center">
+        <p>&copy; 2025 Phoebe Velma. </p>
     </footer>
 
     <script src="script.js"></script>
 </body>
 </html>
+
