@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", type);
 
 // Dark Mode Toggle
 document.getElementById('darkModeToggle').addEventListener('click', () => {
+    document.body.classList.toggle('dark');
     document.documentElement.classList.toggle('dark');
 });
 
@@ -57,21 +58,33 @@ document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 function openModal(project) {
     const modal = document.getElementById('modal');
     const modalContent = document.getElementById('modalContent');
+
     if (project === 'ajali') {
         modalContent.src = 'https://ajali-1-s5ar.onrender.com/';
     } else if (project === 'car-rental') {
         modalContent.src = 'https://car-rental-booking-system.vercel.app/cars';
     } else if (project === 'weather') {
-        modalContent.src = 'https://weather-watch-lite-1-5aa2.onrender.com/'; // This portfolio itself
+        modalContent.src = 'https://weather-watch-lite-1-5aa2.onrender.com/';
     }
+
+    modal.style.display = 'flex';
     modal.classList.remove('hidden');
-    modal.classList.add('flex');
+    modal.classList.add('fade-in');
 }
 
+// Close modal on button click
 function closeModal() {
     const modal = document.getElementById('modal');
     const modalContent = document.getElementById('modalContent');
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
     modalContent.src = '';
+    modal.style.display = 'none';
+    modal.classList.remove('fade-in');
 }
+
+// Optional: Close modal on outside click
+window.addEventListener('click', function (e) {
+    const modal = document.getElementById('modal');
+    if (e.target === modal) {
+        closeModal();
+    }
+});

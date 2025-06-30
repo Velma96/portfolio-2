@@ -1,149 +1,209 @@
-/* General Section Spacing Fix for Nav Scroll */
-section {
-    scroll-margin-top: 80px;
-}
-
-/* Typography and Backgrounds */
 body {
-    background: linear-gradient(to right, #E0F7FA, #B2EBF2); /* Light turquoise gradient */
-    color: #0E7490; /* Deep turquoise text */
-    transition: background 0.5s ease, color 0.5s ease;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* Navigation (Header) */
-nav {
-    background-color: #06B6D4; /* Bright turquoise */
-}
-
-nav a {
-    transition: color 0.3s ease;
-    color: white;
-}
-
-nav a:hover {
-    color: #D1FAE5; /* Soft mint-turquoise on hover */
-}
-
-/* Hero Section Text */
-#about h2, #about p {
+    background: linear-gradient(135deg, #E0F7FA, #B2EBF2);
     color: #0E7490;
-}
-
-/* Project Cards */
-.project-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: background 0.5s ease, color 0.5s ease;
+  }
+  
+  .dark body {
+    background: linear-gradient(135deg, #0F766E, #134E4A);
+    color: #E0F7FA;
+  }
+  
+  .navbar {
+    background-color: rgba(6, 182, 212, 0.8);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .dark .navbar {
+    background-color: rgba(14, 116, 144, 0.8);
+  }
+  
+  .nav-links li {
+    display: inline;
+    margin-left: 1rem;
+  }
+  
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-links a:hover {
+    color: #F0FDFE;
+  }
+  
+  .section {
+    padding: 5rem 2rem;
+    text-align: center;
+  }
+  
+  .section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .projects-grid, .skills-grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+  
+  .projects-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+  
+  .project-card {
+    background: rgba(255, 255, 255, 0.7);
     border: 1px solid #06B6D4;
-    background: #F0FDFE; /* Very light turquoise */
-}
-
-.project-card:hover {
-    transform: translateY(-5px);
+    border-radius: 1rem;
     box-shadow: 0 10px 20px rgba(6, 182, 212, 0.2);
-}
-
-/* Skill Badges */
-.skill-badge {
-    background-color: #06B6D4;  /* Turquoise */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    padding: 1rem;
+  }
+  
+  .project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px rgba(6, 182, 212, 0.3);
+  }
+  
+  .dark .project-card {
+    background: rgba(19, 78, 74, 0.8);
+    border-color: #0891B2;
+  }
+  
+  .skill-badge {
+    background-color: #06B6D4;
     color: white;
     padding: 0.5rem 1rem;
     border-radius: 9999px;
-    font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.skill-badge:hover {
-    background-color: #0891B2;  /* Darker turquoise */
-    transform: scale(1.1);
-}
-
-/* Contact Form Styling */
-form input, form textarea {
+    display: inline-block;
+    margin: 0.3rem;
+  }
+  
+  .dark .skill-badge {
+    background-color: #0891B2;
+  }
+  
+  .contact-form input, .contact-form textarea {
+    width: 100%;
+    padding: 0.75rem;
     border: 1px solid #06B6D4;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
     background-color: #E0F7FA;
-    color: #0E7490;
-    padding: 0.5rem;
-    border-radius: 0.375rem;
-}
-
-form button {
+  }
+  
+  .dark .contact-form input, .dark .contact-form textarea {
+    background-color: #164E63;
+    color: #E0F7FA;
+  }
+  
+  .btn {
+    background-color: #06B6D4;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    display: inline-block;
+  }
+  
+  .btn:hover {
+    background-color: #0891B2;
+  }
+  
+  .toggle-btn {
     background-color: #06B6D4;
     color: white;
     padding: 0.5rem 1rem;
-    border-radius: 0.375rem;
-    transition: background-color 0.3s ease;
-}
-
-form button:hover {
+    border-radius: 0.5rem;
+  }
+  
+  .toggle-btn:hover {
     background-color: #0891B2;
-}
-
-/* Footer */
-footer {
-    background-color: #06B6D4;
-    color: white;
-}
-
-/* Fade-in Animations */
-.fade-in {
+  }
+  
+  .footer {
+    background-color: rgba(6, 182, 212, 0.8);
+    text-align: center;
+    padding: 1rem;
+  }
+  
+  .dark .footer {
+    background-color: rgba(14, 116, 144, 0.8);
+  }
+  
+  .modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(6, 182, 212, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-content {
+    background: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    max-width: 800px;
+    width: 90%;
+  }
+  
+  .dark .modal-content {
+    background: #134E4A;
+    color: #E0F7FA;
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: red;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  .fade-in {
     opacity: 0;
     transform: translateY(30px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
-}
-
-.fade-in.visible {
+    transition: opacity 1s ease, transform 1s ease;
+  }
+  
+  .fade-in.visible {
     opacity: 1;
     transform: translateY(0);
-}
-
-/* Modal */
-#modal {
-    background-color: rgba(6, 182, 212, 0.8); /* Semi-transparent turquoise overlay */
-}
-
-/* Dark Mode Overrides */
-.dark body {
-    background: linear-gradient(to right, #134E4A, #0F766E); /* Deep green-turquoise gradient */
-    color: #E0F7FA;
-}
-
-.dark nav {
-    background-color: #0E7490;
-}
-
-.dark nav a {
-    color: #E0F7FA;
-}
-
-.dark nav a:hover {
-    color: #A7F3D0; /* Soft mint-turquoise hover in dark mode */
-}
-
-.dark .project-card {
-    background-color: #134E4A;
-    border-color: #0891B2;
-    color: #E0F7FA;
-}
-
-.dark .skill-badge {
-    background-color: #0891B2;
-}
-
-.dark form input,
-.dark form textarea {
-    background-color: #164E63;
-    color: #E0F7FA;
-    border-color: #06B6D4;
-}
-
-.dark form button {
-    background-color: #06B6D4;
-}
-
-.dark form button:hover {
-    background-color: #0891B2;
-}
-
-.dark footer {
-    background-color: #0E7490;
-}
+  }
+  
+/* Custom gradient text headline */
+.gradient-heading {
+    background: linear-gradient(90deg, #3b82f6, #9333ea);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+  
+  .visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .shadow-lg {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  }
+  
