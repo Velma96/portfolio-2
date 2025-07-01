@@ -62,7 +62,7 @@ function openModal(project) {
     if (project === 'ajali') {
         modalContent.src = 'https://ajali-1-s5ar.onrender.com/';
     } else if (project === 'car-rental') {
-        modalContent.src = 'https://car-rental-booking-system.vercel.app/cars';
+        modalContent.src = 'https://spacer-platform-1.onrender.com/';
     } else if (project === 'weather') {
         modalContent.src = 'https://weather-watch-lite-1-5aa2.onrender.com/';
     }

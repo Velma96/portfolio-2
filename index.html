@@ -9,42 +9,43 @@
 </head>
 <body class="bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-100">
 
-  <!-- Dark Mode Toggle -->
-  <div class="fixed top-4 right-4 z-50">
-    <button id="darkModeToggle" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded shadow hover:scale-105 transition">Toggle Dark Mode</button>
+ <!-- Dark Mode Toggle -->
+<div class="fixed top-20 right-4 z-50">
+  <button id="darkModeToggle" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm px-3 py-1 rounded shadow hover:scale-105 transition">
+    🌙
+  </button>
+</div>
+
+<!-- Navigation -->
+<nav class="bg-white dark:bg-gray-800 shadow sticky top-0 z-40">
+  <div class="container mx-auto flex justify-between items-center px-6 py-4">
+    <h1 class="text-2xl font-bold">Phoebe Velma</h1>
+
+    <!-- Desktop Nav -->
+    <ul class="hidden md:flex space-x-6">
+      <li><a href="#about" class="hover:text-blue-500 text-gray-800 dark:text-white">About</a></li>
+      <li><a href="#projects" class="hover:text-blue-500 text-gray-800 dark:text-white">Projects</a></li>
+      <li><a href="#skills" class="hover:text-blue-500 text-gray-800 dark:text-white">Skills</a></li>
+      <li><a href="#contact" class="hover:text-blue-500 text-gray-800 dark:text-white">Contact</a></li>
+    </ul>
+    
+
+    <!-- Mobile Hamburger -->
+    <button id="menuToggle" class="md:hidden text-xl text-blue-600 dark:text-white focus:outline-none px-2 py-1 relative top-2">
+      ☰
+    </button>
   </div>
 
-  <!-- Navigation -->
-  <nav class="bg-white dark:bg-gray-800 shadow sticky top-0 z-40">
-    <div class="container mx-auto flex justify-between items-center px-6 py-4">
-      <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Phoebe Velma</h1>
+  <!-- Mobile Dropdown Menu -->
+  <div id="mobileMenu" class="hidden md:hidden bg-white dark:bg-gray-800 px-6 py-4 space-y-2 shadow-lg">
+    <a href="#about" class="block hover:text-blue-500 text-gray-800 dark:text-white">About</a>
+    <a href="#projects" class="block hover:text-blue-500 text-gray-800 dark:text-white">Projects</a>
+    <a href="#skills" class="block hover:text-blue-500 text-gray-800 dark:text-white">Skills</a>
+    <a href="#contact" class="block hover:text-blue-500 text-gray-800 dark:text-white">Contact</a>
+  </div>
+  
+</nav>
 
-
-      <!-- Desktop Nav -->
-      <ul class="hidden md:flex space-x-6">
-        <li><a href="#about" class="text-gray-800 dark:text-white hover:text-blue-500 dark:hover:text-blue-300">About</a></li>
-        <li><a href="#projects" class="text-gray-800 dark:text-white hover:text-blue-500 dark:hover:text-blue-300">Projects</a></li>
-        <li><a href="#skills" class="text-gray-800 dark:text-white hover:text-blue-500 dark:hover:text-blue-300">Skills</a></li>
-        <li><a href="#contact" class="text-gray-800 dark:text-white hover:text-blue-500 dark:hover:text-blue-300">Contact</a></li>
-      </ul>
-      
-
-      <!-- Mobile Hamburger -->
-      <button id="menuToggle" class="md:hidden text-xl text-blue-600 dark:text-white focus:outline-none px-2 py-1">
-        ☰
-      </button>
-      
-    </div>
-
-    <!-- Mobile Dropdown Menu -->
-    <div id="mobileMenu" class="hidden md:hidden bg-white dark:bg-gray-800 px-6 py-4 space-y-2 shadow-lg">
-      <a href="#about" class="block text-gray-800 dark:text-white hover:text-blue-500 dark:hover:text-blue-300">About</a>
-      <a href="#projects" class="block text-gray-800 dark:text-white hover:text-blue-500 dark:hover:text-blue-300">Projects</a>
-      <a href="#skills" class="block text-gray-800 dark:text-white hover:text-blue-500 dark:hover:text-blue-300">Skills</a>
-      <a href="#contact" class="block text-gray-800 dark:text-white hover:text-blue-500 dark:hover:text-blue-300">Contact</a>
-    </div>
-    
-  </nav>
 
 
 
@@ -62,8 +63,10 @@
         Hi! I'm <span class="text-blue-400 font-semibold">Phoebe Velma</span>, a Full-Stack Software Engineer with a strong foundation in Economics and Mathematics. I enjoy building user-focused solutions.
       </p>
       <p class="text-lg text-gray-300 leading-relaxed mb-4">
-        My expertise includes React, Flask, Django, PostgreSQL and more. I love open source, learning, and solving real-world problems.
+        I specialize in building dynamic and user-focused web applications using technologies like <span class="text-blue-400 font-semibold">React</span>, <span class="text-blue-400 font-semibold">Flask</span>, <span class="text-blue-400 font-semibold">Django</span>, and <span class="text-blue-400 font-semibold">PostgreSQL</span>. I’m passionate about <span class="text-purple-400 font-semibold">open source contribution</span>, continuous learning, and crafting solutions that make a real impact. Whether it's optimizing backend logic, designing beautiful frontends, or debugging that one stubborn error at 2 AM—<span class="text-pink-400 font-semibold">I’m all in!</span>
       </p>
+      
+      
 
       <!-- Resume Download Button -->
       <a href="resume.pdf" download
@@ -97,10 +100,10 @@
 
       <!-- Car Rental App -->
       <div class="project-card bg-white dark:bg-gray-800 rounded shadow p-4 hover:scale-105 transition">
-        <h3 class="text-xl font-semibold mb-2">Car Rental App</h3>
-        <img src="car-rental.png" alt="Car Rental App" class="rounded mb-2">
-        <p class="text-gray-500 dark:text-gray-300 mb-4">Django + PostgreSQL | Full-stack eCommerce with payments</p>
-        <a href="https://car-rental-booking-system.vercel.app/cars" target="_blank" class="inline-block bg-gradient-to-r from-green-600 to-emerald-700 text-white px-4 py-2 rounded hover:from-emerald-800 hover:to-green-700 transition">Live Preview</a>
+        <h3 class="text-xl font-semibold mb-2">Spacer Platform</h3>
+        <img src="spacer.png" alt="Car Rental App" class="rounded mb-2">
+        <p class="text-gray-500 dark:text-gray-300 mb-4">Django + PostgreSQL | Full-stack rental space platform  with payment system depending on the size of the space </p>
+        <a href="https://spacer-platform-1.onrender.com/" target="_blank" class="inline-block bg-gradient-to-r from-green-600 to-emerald-700 text-white px-4 py-2 rounded hover:from-emerald-800 hover:to-green-700 transition">Live Preview</a>
       </div>
 
       <!-- Weather Watchlite -->
