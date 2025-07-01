@@ -207,3 +207,33 @@ body {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
   }
   
+  #menuToggle {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+  }
+
+  .dark .navbar {
+    background-color: rgba(10, 25, 47, 0.95);
+  }
+  
+  .dark .nav-links a {
+    color: #E0F7FA;
+  }
+  
+  .dark .nav-links a:hover {
+    color: #ffffff;
+  }
+
+  .dark #darkModeToggle {
+    color: #E0F7FA;
+    background-color: rgba(30, 64, 175, 0.8); /* Dark blue background */
+  }
+  
+  
+
+
+  
