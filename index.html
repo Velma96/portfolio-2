@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <title>Phoebe Velma - Software Engineer Portfolio</title>
   <link rel="icon" href="logo-icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap');
 
@@ -120,6 +120,7 @@
       border: 1px solid rgba(255,255,255,0.4);
       box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
       color: var(--text-light);
+      border-radius: 0.75rem;
     }
 
     .dark .pastel-card {
@@ -136,16 +137,34 @@
 
     @media (max-width: 768px) {
       .pastel-card {
-        padding: 1.5rem;
+        padding: 0.75rem;
+        min-height: auto;
       }
       section {
-        margin-bottom: 40px;
+        margin-bottom: 1rem;
+        padding: 0.5rem;
       }
       h2 {
-        font-size: 2rem;
+        font-size: 1.25rem;
       }
       .gradient-text {
-        font-size: 1.75rem;
+        font-size: 1rem;
+      }
+      .section-observer {
+        min-height: auto !important;
+        display: block !important;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+      }
+      .min-vh-100 {
+        min-height: 40vh;
+      }
+      .container {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
       }
     }
   </style>
@@ -156,9 +175,29 @@
   <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.6/babel.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
   
   <script type="text/babel" data-presets="react" defer>
     const { useState, useEffect } = React;
+
+    class ErrorBoundary extends React.Component {
+      state = { hasError: false, error: null };
+
+      static getDerivedStateFromError(error) {
+        return { hasError: true, error };
+      }
+
+      componentDidCatch(error, info) {
+        console.error('ErrorBoundary caught:', error, info);
+      }
+
+      render() {
+        if (this.state.hasError) {
+          return <h1 className="text-center text-danger p-4">Something went wrong. Please try again.</h1>;
+        }
+        return this.props.children;
+      }
+    }
 
     const projectsData = [
       { 
@@ -193,7 +232,7 @@
     const skillsData = [
       { 
         category: 'Frontend Development', 
-        skills: ['React', 'JavaScript/TypeScript', 'HTML5 & CSS3', 'Tailwind CSS', 'Responsive Design'], 
+        skills: ['React', 'JavaScript/TypeScript', 'HTML5 & CSS3', 'Bootstrap', 'Responsive Design'], 
         icon: '💻',
         color: 'var(--secondary-teal)'
       },
@@ -230,17 +269,31 @@
       }, [isDarkMode]);
 
       useEffect(() => {
-        const observer = new IntersectionObserver(entries => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-              setActiveSection(entry.target.id);
-            }
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                setActiveSection(entry.target.id);
+              }
+            });
+          },
+          { threshold: 0.1, rootMargin: '-10px 0px' }
+        );
+
+        const elements = document.querySelectorAll('.section-observer');
+        elements.forEach((el) => observer.observe(el));
+
+        const timeout = setTimeout(() => {
+          elements.forEach((el) => {
+            el.classList.add('visible');
           });
-        }, { threshold: 0.4, rootMargin: '-50px 0px' });
-        
-        document.querySelectorAll('.section-observer').forEach(el => observer.observe(el));
-        return () => observer.disconnect();
+        }, 1500);
+
+        return () => {
+          observer.disconnect();
+          clearTimeout(timeout);
+        };
       }, []);
 
       useEffect(() => {
@@ -274,27 +327,26 @@
 
       return (
         <>
-          {/* Navigation */}
-          <nav className="fixed w-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-sm z-40">
-            <div className="container mx-auto flex justify-between items-center px-6 py-4">
-              <div className="flex items-center space-x-2">
-                <svg className="w-8 h-8 text-blue-500 dark:text-blue-300" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <nav className="fixed w-100 bg-white bg-opacity-90 dark:bg-dark bg-opacity-90 shadow-sm z-40">
+            <div className="container d-flex justify-content-between align-items-center p-3 p-md-4">
+              <div className="d-flex align-items-center gap-2">
+                <svg className="w-25 h-25 text-primary dark:text-primary" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M12 2L3 12L12 22L21 12L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   <path d="M12 6L7 12L12 18L17 12L12 6Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-                <h1 className="text-2xl font-bold logo gradient-text">Phoebe Velma</h1>
+                <h1 className="fs-4 fw-bold logo gradient-text">Phoebe Velma</h1>
               </div>
               
-              <ul className="hidden md:flex space-x-8">
+              <ul className="d-none d-md-flex gap-4">
                 {['about', 'projects', 'skills', 'contact'].map(section => (
                   <li key={section}>
                     <a 
                       href={`#${section}`} 
-                      className={`relative px-2 py-1 transition-colors ${activeSection === section ? 'text-blue-500 dark:text-blue-300 font-medium' : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-200'}`}
+                      className={`position-relative px-2 py-1 text-decoration-none ${activeSection === section ? 'text-primary dark:text-primary fw-medium' : 'text-secondary dark:text-light hover-text-primary dark-hover-text-primary'}`}
                     >
                       {section.charAt(0).toUpperCase() + section.slice(1)}
                       {activeSection === section && (
-                        <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-500 dark:bg-blue-300 rounded-full"></span>
+                        <span className="position-absolute bottom-0 start-0 w-100 h-px bg-primary dark:bg-primary rounded"></span>
                       )}
                     </a>
                   </li>
@@ -303,19 +355,21 @@
               
               <button 
                 onClick={() => setIsMenuOpen(!isMenuOpen)} 
-                className="md:hidden text-xl text-blue-500 dark:text-blue-300 focus:outline-none px-2 py-1"
+                className="d-md-none fs-5 text-primary dark:text-primary focus:outline-none px-2 py-1"
                 aria-label="Toggle menu"
+                data-bs-toggle="collapse"
+                data-bs-target="#mobileMenu"
               >
                 {isMenuOpen ? <i className="fas fa-times"></i> : <i className="fas fa-bars"></i>}
               </button>
             </div>
             
-            <div className={`${isMenuOpen ? 'block' : 'hidden'} md:hidden bg-white/95 dark:bg-gray-900/95 px-6 py-4 space-y-4 shadow-lg`}>
+            <div className={`collapse ${isMenuOpen ? 'show' : ''} d-md-none bg-white bg-opacity-95 dark:bg-dark bg-opacity-95 p-3 shadow-lg`} id="mobileMenu">
               {['about', 'projects', 'skills', 'contact'].map(section => (
                 <a 
                   key={section} 
                   href={`#${section}`} 
-                  className={`block py-2 ${activeSection === section ? 'text-blue-500 dark:text-blue-300 font-medium' : 'text-gray-700 dark:text-gray-300'}`}
+                  className={`d-block py-2 ${activeSection === section ? 'text-primary dark:text-primary fw-medium' : 'text-secondary dark:text-light'}`}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {section.charAt(0).toUpperCase() + section.slice(1)}
@@ -324,50 +378,50 @@
             </div>
           </nav>
 
-          {/* About Section */}
-          <section id="about" className="section-observer min-h-screen pt-32 pb-20 px-6 fade-in">
-            <div className="container mx-auto max-w-7xl grid md:grid-cols-2 gap-16 items-center">
-              <div className="flex justify-center md:justify-end order-1 md:order-2">
-                <div className="relative w-72 h-72 rounded-2xl overflow-hidden border-4 border-white/30 dark:border-gray-600/30 shadow-2xl group">
+          <section id="about" className="section-observer min-vh-100 pt-5 pb-5 px-3 fade-in">
+            <div className="container row row-cols-1 row-cols-md-2 g-4 align-items-center">
+              <div className="col d-flex justify-content-center justify-content-md-end order-1 order-md-2">
+                <div className="position-relative w-50 h-50 rounded-3 overflow-hidden border border-4 border-white border-opacity-25 dark:border-dark border-opacity-25 shadow-lg">
                   <img
                     src="profile.jpeg"
                     alt="Phoebe Velma smiling profile photo"
-                    className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+                    className="object-fit-cover w-100 h-100 transition-transform duration-500"
+                    onError={(e) => (e.target.src = 'https://via.placeholder.com/150')}
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-blue-500/20 dark:from-blue-300/20 to-transparent"></div>
+                  <div className="position-absolute top-0 start-0 w-100 h-100 bg-gradient-to-t from-primary from-opacity-20 dark:from-primary dark:from-opacity-20 to-transparent"></div>
                 </div>
               </div>
 
-              <div className="order-2 md:order-1">
-                <h2 className="text-4xl sm:text-5xl font-bold mb-6 gradient-text font-serif">Driven by curiosity, grounded in precision!</h2>
-                <p className="text-lg leading-relaxed mb-5 text-gray-700 dark:text-gray-300">
-                  I'm a <span className="highlight-text font-medium">Software Developer</span> with a strong foundation in <span className="text-blue-500 dark:text-blue-300 font-medium">Economics and Mathematics</span>, and a passion for building thoughtful, human-centered technology.
+              <div className="col order-2 order-md-1">
+                <h2 className="fs-2 fw-bold mb-3 gradient-text font-serif">Driven by curiosity, grounded in precision!</h2>
+                <p className="fs-5 lh-base mb-3 text-secondary dark:text-light">
+                  I'm a <span className="highlight-text fw-medium">Software Developer</span> with a strong foundation in <span className="text-primary dark:text-primary fw-medium">Economics and Mathematics</span>, and a passion for building thoughtful, human-centered technology.
                 </p>
-                <p className="text-lg leading-relaxed mb-5 text-gray-700 dark:text-gray-300">
+                <p className="fs-5 lh-base mb-3 text-secondary dark:text-light">
                   My journey began with numbers — analyzing systems, understanding behavior, and solving problems through logic. Over time, that evolved into a deep love for writing code and creating digital tools that make a difference. With each project, I aim to blend analytical precision with creative design, building solutions that are not only functional but meaningful.
                 </p>
-                <p className="text-lg leading-relaxed mb-5 text-gray-700 dark:text-gray-300">
-                  I work with modern tools like <span className="text-blue-500 dark:text-blue-300 font-medium">React</span>, <span className="text-blue-500 dark:text-blue-300 font-medium">Node.js</span>, <span className="text-blue-500 dark:text-blue-300 font-medium">Flask</span>, and <span className="text-blue-500 dark:text-blue-300 font-medium">PostgreSQL</span>, and I'm especially drawn to projects that serve real needs — from emergency response apps to clean, data-driven platforms. Whether I'm writing backend logic or refining a user interface, I care about the details, the experience, and the impact.
+                <p className="fs-5 lh-base mb-3 text-secondary dark:text-light">
+                  I work with modern tools like <span className="text-primary dark:text-primary fw-medium">React</span>, <span className="text-primary dark:text-primary fw-medium">Node.js</span>, <span className="text-primary dark:text-primary fw-medium">Flask</span>, and <span className="text-primary dark:text-primary fw-medium">PostgreSQL</span>, and I'm especially drawn to projects that serve real needs — from emergency response apps to clean, data-driven platforms. Whether I'm writing backend logic or refining a user interface, I care about the details, the experience, and the impact.
                 </p>
-                <p className="text-lg leading-relaxed mb-6 text-gray-700 dark:text-gray-300">
+                <p className="fs-5 lh-base mb-3 text-secondary dark:text-light">
                   Beyond the code, I value simplicity, integrity, and growth. I believe that the best software is built through curiosity, collaboration, and a genuine desire to help others.
                 </p>
 
-                <div className="flex flex-wrap items-center gap-4">
+                <div className="d-flex flex-wrap align-items-center gap-3">
                   <a
                     href="resume.pdf"
                     download
-                    className="px-6 py-3 bg-gradient-to-r from-blue-500 to-teal-500 text-white font-semibold rounded-lg shadow-lg hover:from-blue-600 hover:to-teal-600 transition flex items-center gap-2"
+                    className="btn btn-primary text-white fw-semibold rounded-pill px-4 py-2 shadow-lg"
                   >
-                    <i className="fas fa-download"></i> Download Resume
+                    <i className="fas fa-download me-2"></i> Download Resume
                   </a>
-                  <div className="flex space-x-4">
-                    <a href="https://github.com/velma96" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center hover:bg-blue-100 dark:hover:bg-blue-900/50 transition">
-                      <i className="fab fa-github text-xl text-gray-700 dark:text-white"></i>
+                  <div className="d-flex gap-3">
+                    <a href="https://github.com/velma96" target="_blank" rel="noopener noreferrer" className="w-25 h-25 rounded-circle bg-light dark:bg-dark d-flex align-items-center justify-content-center text-decoration-none">
+                      <i className="fab fa-github fs-5 text-secondary dark:text-white"></i>
                     </a>
-                    <a href="https://linkedin.com/in/phoebe-velma-awuor" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center hover:bg-blue-100 dark:hover:bg-blue-900/50 transition">
-                      <i className="fab fa-linkedin-in text-xl text-gray-700 dark:text-white"></i>
+                    <a href="https://linkedin.com/in/phoebe-velma-awuor" target="_blank" rel="noopener noreferrer" className="w-25 h-25 rounded-circle bg-light dark:bg-dark d-flex align-items-center justify-content-center text-decoration-none">
+                      <i className="fab fa-linkedin-in fs-5 text-secondary dark:text-white"></i>
                     </a>
                   </div>
                 </div>
@@ -375,73 +429,69 @@
             </div>
           </section>
 
-          {/* Projects Section */}
-          <section id="projects" className="section-observer py-20 px-6 fade-in">
-            <div className="container mx-auto max-w-6xl">
-              <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold mb-4 gradient-text font-serif">My Projects</h2>
-                <p className="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
+          <section id="projects" className="section-observer py-5 px-3 fade-in">
+            <div className="container">
+              <div className="text-center mb-4">
+                <h2 className="fs-2 fw-bold mb-3 gradient-text font-serif">My Projects</h2>
+                <p className="fs-5 text-secondary dark:text-light mx-auto" style={{ maxWidth: '32rem' }}>
                   Here are some of my recent works. Each project represents a unique challenge and learning opportunity.
                 </p>
               </div>
               
-              <div className="flex justify-center mb-12 space-x-4 flex-wrap">
+              <div className="d-flex justify-content-center mb-4 gap-2 flex-wrap">
                 {['All', 'React', 'Django', 'JavaScript'].map(tech => (
                   <button 
                     key={tech} 
                     onClick={() => setFilter(tech)} 
-                    className={`px-5 py-2 rounded-full transition-all m-1 ${
-                      filter === tech 
-                        ? 'bg-blue-500 text-white shadow-md' 
-                        : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
-                    }`}
+                    className={`btn btn-sm rounded-pill m-1 ${filter === tech ? 'btn-primary text-white shadow' : 'btn-light dark:bg-dark text-secondary dark:text-light'}`}
                   >
                     {tech}
                   </button>
                 ))}
               </div>
               
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                 {filteredProjects.map(project => (
                   <div 
                     key={project.id} 
-                    className="pastel-card rounded-xl p-6 shadow-lg hover:shadow-xl transition-all cursor-pointer group overflow-hidden relative"
+                    className="col pastel-card p-3 shadow hover-shadow-lg transition-all cursor-pointer position-relative"
                     onClick={() => openModal(project.id)}
                     style={{ backgroundColor: project.color }}
                   >
-                    <div className="absolute inset-0 bg-white/30 dark:bg-black/20 group-hover:opacity-0 transition-opacity"></div>
-                    <h3 className="text-2xl font-semibold mb-3 relative z-10 text-gray-800 dark:text-white">{project.title}</h3>
-                    <div className="rounded-lg overflow-hidden mb-4 relative z-10 border border-white/30 dark:border-gray-600/30">
+                    <div className="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-25 dark:bg-black dark:bg-opacity-25 transition-opacity"></div>
+                    <h3 className="fs-4 fw-semibold mb-3 position-relative z-10 text-dark dark:text-white">{project.title}</h3>
+                    <div className="rounded-3 overflow-hidden mb-3 position-relative z-10 border border-white border-opacity-25 dark:border-dark dark:border-opacity-25">
                       <img 
                         src={project.image} 
                         alt={project.title} 
-                        className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="w-100 h-48 object-fit-cover transition-transform duration-500"
+                        onError={(e) => (e.target.src = 'https://via.placeholder.com/150')}
                         loading="lazy"
                       />
                     </div>
-                    <p className="text-gray-700 dark:text-gray-300 mb-4 relative z-10">{project.description}</p>
-                    <div className="flex flex-wrap gap-2 mb-4 relative z-10">
+                    <p className="text-secondary dark:text-light mb-3 position-relative z-10">{project.description}</p>
+                    <div className="d-flex flex-wrap gap-2 mb-3 position-relative z-10">
                       {project.tech.map(tech => (
                         <span 
                           key={tech} 
-                          className="bg-white/80 dark:bg-gray-800/80 text-gray-700 dark:text-gray-300 text-xs px-3 py-1 rounded-full"
+                          className="bg-white bg-opacity-75 dark:bg-dark dark:bg-opacity-75 text-secondary dark:text-light fs-6 px-2 py-1 rounded-pill"
                         >
                           {tech}
                         </span>
                       ))}
                     </div>
-                    <div className="flex justify-between items-center relative z-10">
+                    <div className="d-flex justify-content-between align-items-center position-relative z-10">
                       <a 
                         href={project.link} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="text-sm font-medium text-blue-600 dark:text-blue-300 hover:underline flex items-center gap-1"
+                        className="fs-6 text-primary dark:text-primary text-decoration-underline d-flex align-items-center gap-1"
                         onClick={e => e.stopPropagation()}
                       >
-                        Live Demo <i className="fas fa-external-link-alt text-xs"></i>
+                        Live Demo <i className="fas fa-external-link-alt fs-6"></i>
                       </a>
-                      <button className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-300 flex items-center gap-1">
-                        View Details <i className="fas fa-chevron-right text-xs"></i>
+                      <button className="fs-6 text-secondary dark:text-light text-decoration-underline d-flex align-items-center gap-1">
+                        View Details <i className="fas fa-chevron-right fs-6"></i>
                       </button>
                     </div>
                   </div>
@@ -450,29 +500,29 @@
             </div>
           </section>
 
-          <section id="skills" className="section-observer py-20 px-6 fade-in">
-            <div className="container mx-auto max-w-6xl">
-              <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold mb-4 gradient-text font-serif">Technical Skills</h2>
-                <p className="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
+          <section id="skills" className="section-observer py-5 px-3 fade-in">
+            <div className="container">
+              <div className="text-center mb-4">
+                <h2 className="fs-2 fw-bold mb-3 gradient-text font-serif">Technical Skills</h2>
+                <p className="fs-5 text-secondary dark:text-light mx-auto" style={{ maxWidth: '32rem' }}>
                   I've cultivated a diverse skill set that allows me to tackle projects from concept to deployment.
                 </p>
               </div>
               
-              <div className="grid md:grid-cols-3 gap-8">
+              <div className="row row-cols-1 row-cols-md-3 g-4">
                 {skillsData.map(skill => (
                   <div 
                     key={skill.category} 
-                    className="pastel-card rounded-xl p-8 shadow-lg hover:shadow-xl transition-all"
+                    className="col pastel-card p-4 shadow hover-shadow-lg transition-all"
                     style={{ backgroundColor: skill.color }}
                   >
-                    <div className="text-4xl mb-4">{skill.icon}</div>
-                    <h3 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">{skill.category}</h3>
-                    <ul className="space-y-3">
+                    <div className="fs-1 mb-3">{skill.icon}</div>
+                    <h3 className="fs-4 fw-semibold mb-3 text-dark dark:text-white">{skill.category}</h3>
+                    <ul className="list-unstyled">
                       {skill.skills.map(item => (
-                        <li key={item} className="flex items-start">
-                          <span className="text-blue-500 dark:text-blue-300 mr-2 mt-1">✓</span>
-                          <span className="text-gray-700 dark:text-gray-300">{item}</span>
+                        <li key={item} className="d-flex align-items-start mb-2">
+                          <span className="text-primary dark:text-primary me-2 mt-1">✓</span>
+                          <span className="text-secondary dark:text-light">{item}</span>
                         </li>
                       ))}
                     </ul>
@@ -480,20 +530,20 @@
                 ))}
               </div>
               
-              <div className="mt-16 pastel-card rounded-xl p-8 shadow-lg max-w-4xl mx-auto" style={{ backgroundColor: 'var(--secondary-teal)' }}>
-                <h3 className="text-2xl font-semibold mb-4 text-center text-gray-800 dark:text-white">Professional Experience</h3>
-                <div className="space-y-6">
-                  <div className="border-l-2 border-blue-500 dark:border-blue-300 pl-4">
-                    <h4 className="text-xl font-medium text-gray-800 dark:text-white">Full Stack Developer | Freelance</h4>
-                    <p className="text-gray-700 dark:text-gray-300 text-sm mb-2">2025 Jan - Present</p>
-                    <p className="text-gray-700 dark:text-gray-300">
+              <div className="mt-4 pastel-card rounded-3 p-4 shadow max-w-4xl mx-auto" style={{ backgroundColor: 'var(--secondary-teal)' }}>
+                <h3 className="fs-4 fw-semibold mb-3 text-center text-dark dark:text-white">Professional Experience</h3>
+                <div className="d-flex flex-column gap-3">
+                  <div className="border-start border-2 border-primary dark:border-primary ps-3">
+                    <h4 className="fs-5 fw-medium text-dark dark:text-white">Full Stack Developer | Freelance</h4>
+                    <p className="text-secondary dark:text-light fs-6 mb-2">2025 Jan - Present</p>
+                    <p className="text-secondary dark:text-light">
                       Developed and deployed full-stack applications for clients across various industries, focusing on clean code and user experience.
                     </p>
                   </div>
-                  <div className="border-l-2 border-blue-500 dark:border-blue-300 pl-4">
-                    <h4 className="text-xl font-medium text-gray-800 dark:text-white">Technical Mentor | Coding Bootcamp</h4>
-                    <p className="text-gray-700 dark:text-gray-300 text-sm mb-2"> Jan 2025-April 2025</p>
-                    <p className="text-gray-700 dark:text-gray-300">
+                  <div className="border-start border-2 border-primary dark:border-primary ps-3">
+                    <h4 className="fs-5 fw-medium text-dark dark:text-white">Technical Mentor | Coding Bootcamp</h4>
+                    <p className="text-secondary dark:text-light fs-6 mb-2">Jan 2025-April 2025</p>
+                    <p className="text-secondary dark:text-light">
                       Guided students through full-stack development concepts, code reviews, and project development.
                     </p>
                   </div>
@@ -502,67 +552,66 @@
             </div>
           </section>
 
-          {/* Contact Section */}
-          <section id="contact" className="section-observer py-20 px-6 fade-in">
-            <div className="container mx-auto max-w-4xl">
-              <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold mb-4 gradient-text font-serif">Get In Touch</h2>
-                <p className="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
+          <section id="contact" className="section-observer py-5 px-3 fade-in">
+            <div className="container">
+              <div className="text-center mb-4">
+                <h2 className="fs-2 fw-bold mb-3 gradient-text font-serif">Get In Touch</h2>
+                <p className="fs-5 text-secondary dark:text-light mx-auto" style={{ maxWidth: '32rem' }}>
                   Have a project in mind or want to discuss potential opportunities? I'd love to hear from you!
                 </p>
               </div>
               
-              <div className="grid md:grid-cols-3 gap-6 mb-12">
+              <div className="row row-cols-1 row-cols-md-3 g-4 mb-4">
                 <a 
                   href="mailto:awuorphoebi@gmail.com" 
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="pastel-card rounded-xl p-6 text-center hover:shadow-lg transition-all"
+                  className="col pastel-card p-3 text-center text-decoration-none shadow hover-shadow-lg transition-all"
                   style={{ backgroundColor: 'var(--accent-coral)' }}
                 >
-                  <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i className="fas fa-envelope text-blue-500 dark:text-blue-300 text-xl"></i>
+                  <div className="w-25 h-25 bg-primary bg-opacity-10 dark:bg-primary dark:bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
+                    <i className="fas fa-envelope text-primary dark:text-primary fs-5"></i>
                   </div>
-                  <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Email</h3>
-                  <p className="text-gray-700 dark:text-gray-300">awuorphoebi@gmail.com</p>
+                  <h3 className="fs-5 fw-semibold mb-2 text-dark dark:text-white">Email</h3>
+                  <p className="text-secondary dark:text-light">awuorphoebi@gmail.com</p>
                 </a>
                 <a 
                   href="https://github.com/velma96" 
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="pastel-card rounded-xl p-6 text-center hover:shadow-lg transition-all"
+                  className="col pastel-card p-3 text-center text-decoration-none shadow hover-shadow-lg transition-all"
                   style={{ backgroundColor: 'var(--primary-blue)' }}
                 >
-                  <div className="w-12 h-12 bg-teal-100 dark:bg-teal-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i className="fab fa-github text-teal-500 dark:text-teal-300 text-xl"></i>
+                  <div className="w-25 h-25 bg-teal bg-opacity-10 dark:bg-teal dark:bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
+                    <i className="fab fa-github text-teal dark:text-teal fs-5"></i>
                   </div>
-                  <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">GitHub</h3>
-                  <p className="text-gray-700 dark:text-gray-300">@velma96</p>
+                  <h3 className="fs-5 fw-semibold mb-2 text-dark dark:text-white">GitHub</h3>
+                  <p className="text-secondary dark:text-light">@velma96</p>
                 </a>
                 <a 
                   href="https://linkedin.com/in/phoebe-velma-awuor"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="pastel-card rounded-xl p-6 text-center hover:shadow-lg transition-all"
+                  className="col pastel-card p-3 text-center text-decoration-none shadow hover-shadow-lg transition-all"
                   style={{ backgroundColor: 'var(--secondary-teal)' }}
                 >
-                  <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i className="fab fa-linkedin-in text-indigo-500 dark:text-indigo-300 text-xl"></i>
+                  <div className="w-25 h-25 bg-indigo bg-opacity-10 dark:bg-indigo dark:bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
+                    <i className="fab fa-linkedin-in text-indigo dark:text-indigo fs-5"></i>
                   </div>
-                  <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">LinkedIn</h3>
-                  <p className="text-gray-700 dark:text-gray-300">Connect with me</p>
+                  <h3 className="fs-5 fw-semibold mb-2 text-dark dark:text-white">LinkedIn</h3>
+                  <p className="text-secondary dark:text-light">Connect with me</p>
                 </a>
               </div>
               
               <form 
                 action="https://formspree.io/f/mrbkjqeo"
                 method="POST"
-                className="pastel-card rounded-xl p-8 shadow-lg max-w-2xl mx-auto"
+                className="pastel-card rounded-3 p-4 shadow max-w-2xl mx-auto"
                 style={{ backgroundColor: 'var(--neutral-gray)' }}
               >
-                <div className="space-y-6">
+                <div className="d-flex flex-column gap-3">
                   <div>
-                    <label htmlFor="name" className="block text-gray-800 dark:text-white mb-2">Your Name</label>
+                    <label htmlFor="name" className="d-block text-dark dark:text-white mb-2">Your Name</label>
                     <input
                       type="text"
                       id="name"
@@ -571,11 +620,11 @@
                       value={formData.name}
                       onChange={handleFormChange}
                       required
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-300 focus:border-transparent bg-white/80 dark:bg-gray-800/80 text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-200"
+                      className="form-control rounded-3 bg-white bg-opacity-75 dark:bg-dark dark:bg-opacity-75 text-dark dark:text-white placeholder-secondary dark:placeholder-light"
                     />
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-gray-800 dark:text-white mb-2">Email Address</label>
+                    <label htmlFor="email" className="d-block text-dark dark:text-white mb-2">Email Address</label>
                     <input
                       type="email"
                       id="email"
@@ -584,11 +633,11 @@
                       value={formData.email}
                       onChange={handleFormChange}
                       required
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-300 focus:border-transparent bg-white/80 dark:bg-gray-800/80 text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-200"
+                      className="form-control rounded-3 bg-white bg-opacity-75 dark:bg-dark dark:bg-opacity-75 text-dark dark:text-white placeholder-secondary dark:placeholder-light"
                     />
                   </div>
                   <div>
-                    <label htmlFor="message" className="block text-gray-800 dark:text-white mb-2">Your Message</label>
+                    <label htmlFor="message" className="d-block text-dark dark:text-white mb-2">Your Message</label>
                     <textarea
                       id="message"
                       name="message"
@@ -597,12 +646,12 @@
                       onChange={handleFormChange}
                       required
                       rows="5"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-300 focus:border-transparent bg-white/80 dark:bg-gray-800/80 text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-200"
+                      className="form-control rounded-3 bg-white bg-opacity-75 dark:bg-dark dark:bg-opacity-75 text-dark dark:text-white placeholder-secondary dark:placeholder-light"
                     ></textarea>
                   </div>
                   <button 
                     type="submit" 
-                    className="w-full bg-gradient-to-r from-blue-500 to-teal-500 text-white px-6 py-3 rounded-lg font-medium hover:from-blue-600 hover:to-teal-600 transition-all shadow-md"
+                    className="btn btn-primary text-white fw-medium rounded-3 w-100"
                   >
                     Send Message
                   </button>
@@ -611,61 +660,59 @@
             </div>
           </section>
 
-          {/* Footer */}
-          <footer className="py-8 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-t border-gray-200 dark:border-gray-600">
-            <div className="container mx-auto px-6">
-              <div className="flex flex-col md:flex-row justify-between items-center">
-                <div className="flex items-center space-x-2 mb-4 md:mb-0">
-                  <svg className="w-6 h-6 text-blue-500 dark:text-blue-300" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <footer className="py-4 bg-white bg-opacity-90 dark:bg-dark bg-opacity-90 border-top border-light-subtle dark:border-dark-subtle">
+            <div className="container px-3">
+              <div className="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                <div className="d-flex align-items-center gap-2 mb-3 mb-md-0">
+                  <svg className="w-25 h-25 text-primary dark:text-primary" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 2L3 12L12 22L21 12L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     <path d="M12 6L7 12L12 18L17 12L12 6Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
-                  <span className="text-lg font-medium logo text-gray-800 dark:text-white">Phoebe Velma</span>
+                  <span className="fs-5 fw-medium logo text-dark dark:text-white">Phoebe Velma</span>
                 </div>
-                <div className="flex space-x-6">
-                  <a href="https://github.com/velma96" target="_blank" rel="noopener noreferrer" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-300 transition">
-                    <i className="fab fa-github text-xl"></i>
+                <div className="d-flex gap-3">
+                  <a href="https://github.com/velma96" target="_blank" rel="noopener noreferrer" className="text-secondary dark:text-light text-decoration-none hover-text-primary dark-hover-text-primary">
+                    <i className="fab fa-github fs-5"></i>
                   </a>
-                  <a href="https://linkedin.com/in/phoebe-velma-awuor" target="_blank" rel="noopener noreferrer" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-300 transition">
-                    <i className="fab fa-linkedin-in text-xl"></i>
+                  <a href="https://linkedin.com/in/phoebe-velma-awuor" target="_blank" rel="noopener noreferrer" className="text-secondary dark:text-light text-decoration-none hover-text-primary dark-hover-text-primary">
+                    <i className="fab fa-linkedin-in fs-5"></i>
                   </a>
-                  <a href="https://twitter.com/yourprofile" target="_blank" rel="noopener noreferrer" className="text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-300 transition">
-                    <i className="fab fa-twitter text-xl"></i>
+                  <a href="https://twitter.com/yourprofile" target="_blank" rel="noopener noreferrer" className="text-secondary dark:text-light text-decoration-none hover-text-primary dark-hover-text-primary">
+                    <i className="fab fa-twitter fs-5"></i>
                   </a>
                   <button 
                     onClick={() => setIsDarkMode(!isDarkMode)} 
-                    className="w-10 h-10 rounded-full flex items-center justify-center bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition"
+                    className="w-25 h-25 rounded-circle d-flex align-items-center justify-content-center bg-light dark:bg-dark"
                     aria-label="Toggle dark mode"
                   >
                     {isDarkMode ? (
-                      <i className="fas fa-sun text-yellow-400 text-lg"></i>
+                      <i className="fas fa-sun text-warning fs-5"></i>
                     ) : (
-                      <i className="fas fa-moon text-blue-600 text-lg"></i>
+                      <i className="fas fa-moon text-primary fs-5"></i>
                     )}
                   </button>
                 </div>
               </div>
-              <div className="mt-6 text-center text-gray-600 dark:text-gray-300 text-sm">
+              <div className="mt-3 text-center text-secondary dark:text-light fs-6">
                 <p>© {new Date().getFullYear()} Phoebe Velma. All rights reserved.</p>
                 <p className="mt-1">Built with ❤️ and React</p>
               </div>
             </div>
           </footer>
 
-          {/* Modal */}
           {modalProject && (
-            <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex justify-center items-center z-50 p-4">
-              <div className="relative bg-white dark:bg-gray-800 rounded-xl overflow-hidden w-full max-w-6xl h-[80vh] shadow-2xl">
+            <div className="position-fixed top-0 start-0 w-100 h-100 bg-black bg-opacity-75 d-flex justify-content-center align-items-center z-50 p-3">
+              <div className="position-relative bg-white dark:bg-dark rounded-3 overflow-hidden w-100 mw-100 h-75 shadow-lg">
                 <button 
                   onClick={closeModal} 
-                  className="absolute top-4 right-4 z-50 w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-600 transition"
+                  className="position-absolute top-0 end-0 z-50 w-25 h-25 rounded-circle bg-light dark:bg-dark d-flex align-items-center justify-content-center"
                   aria-label="Close modal"
                 >
-                  <i className="fas fa-times text-gray-700 dark:text-white"></i>
+                  <i className="fas fa-times text-dark dark:text-white"></i>
                 </button>
                 <iframe 
                   src={projectsData.find(p => p.id === modalProject)?.link} 
-                  className="w-full h-full" 
+                  className="w-100 h-100" 
                   frameBorder="0"
                   title={`${modalProject} project demo`}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -679,7 +726,13 @@
       );
     };
 
-    ReactDOM.render(<App />, document.getElementById('root'));
+    const Root = () => (
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
+    );
+
+    ReactDOM.render(<Root />, document.getElementById('root'));
   </script>
 </body>
 </html>
